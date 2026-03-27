@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>苏州骑行路线 · 从紫珺兰园出发</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0a0f1a;
+      --bg-secondary: #121a2d;
+      --bg-card: #1a2540;
+      --bg-card-hover: #243054;
+      --text-primary: #e8edf5;
+      --text-secondary: #8e9bb3;
+      --text-muted: #5a6785;
+      --accent-teal: #2dd4bf;
+      --accent-blue: #38bdf8;
+      --accent-purple: #a78bfa;
+      --accent-coral: #fb7185;
+      --accent-amber: #fbbf24;
+      --accent-green: #4ade80;
+      --border-color: rgba(255,255,255,0.08);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .bg-pattern {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+      background: 
+        radial-gradient(ellipse 80% 50% at 20% 40%, rgba(45, 212, 191, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 40% at 80% 20%, rgba(56, 189, 248, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse 50% 30% at 60% 80%, rgba(167, 139, 250, 0.08) 0%, transparent 50%);
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 40px 24px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 60px;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo-icon {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, #0d9488 0%, #2dd4bf 100%);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      margin: 0 auto 24px;
+      box-shadow: 0 8px 32px rgba(45, 212, 191, 0.3);
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-teal) 50%, var(--accent-blue) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      font-weight: 300;
+    }
+
+    .subtitle span {
+      color: var(--accent-teal);
+      font-weight: 500;
+    }
+
+    .stats-bar {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      margin-top: 36px;
+      flex-wrap: wrap;
+    }
+
+    .stat-item { text-align: center; }
+    .stat-value { font-size: 2.2rem; font-weight: 700; color: var(--accent-teal); }
+    .stat-label { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+
+    .category-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 36px;
+      flex-wrap: wrap;
+    }
+
+    .category-tab {
+      padding: 10px 20px;
+      border-radius: 24px;
+      border: 1px solid var(--border-color);
+      background: rgba(255,255,255,0.04);
+      color: var(--text-secondary);
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      user-select: none;
+    }
+
+    .category-tab:hover {
+      background: rgba(255,255,255,0.08);
+      color: var(--text-primary);
+      border-color: rgba(255,255,255,0.15);
+    }
+
+    .category-tab.active { font-weight: 600; color: var(--bg-primary); }
+    .category-tab.tab-all.active  { background: #e8edf5; border-color: #e8edf5; color: var(--bg-primary); }
+    .category-tab.tab-urban.active     { background: #4ade80; border-color: #4ade80; }
+    .category-tab.tab-lake.active      { background: #2dd4bf; border-color: #2dd4bf; }
+    .category-tab.tab-heritage.active  { background: #fbbf24; border-color: #fbbf24; }
+    .category-tab.tab-expedition.active{ background: #a78bfa; border-color: #a78bfa; }
+
+    .tab-count {
+      font-size: 0.72rem;
+      background: rgba(0,0,0,0.15);
+      padding: 2px 7px;
+      border-radius: 10px;
+      font-weight: 400;
+    }
+
+    .category-tab:not(.active) .tab-count {
+      background: rgba(255,255,255,0.08);
+    }
+
+    .routes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .route-card {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 28px;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid var(--border-color);
+      position: relative;
+      overflow: hidden;
+      animation: fadeInUp 0.6s ease-out backwards;
+    }
+
+    .route-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--card-gradient);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .route-card:hover {
+      transform: translateY(-8px);
+      background: var(--bg-card-hover);
+      border-color: rgba(255,255,255,0.15);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    .route-card:hover::before { opacity: 1; }
+
+    .route-card.level-easy { --card-gradient: linear-gradient(135deg, #0d9488, #2dd4bf); --card-color: var(--accent-teal); }
+    .route-card.level-medium { --card-gradient: linear-gradient(135deg, #0284c7, #38bdf8); --card-color: var(--accent-blue); }
+    .route-card.level-hard { --card-gradient: linear-gradient(135deg, #7c3aed, #a78bfa); --card-color: var(--accent-purple); }
+    .route-card.level-extreme { --card-gradient: linear-gradient(135deg, #e11d48, #fb7185); --card-color: var(--accent-coral); }
+
+    .route-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .route-distance {
+      font-size: 2.8rem;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--card-color);
+    }
+
+    .route-distance span {
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+
+    .route-badge {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      background: rgba(255,255,255,0.08);
+      color: var(--card-color);
+      border: 1px solid var(--card-color);
+    }
+
+    .route-name { font-size: 1.3rem; font-weight: 600; margin-bottom: 12px; }
+    .route-path { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; margin-bottom: 20px; }
+
+    .route-meta {
+      display: flex;
+      gap: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .meta-icon { width: 18px; height: 18px; opacity: 0.7; }
+
+    .view-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 22px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+
+    .route-card:hover .view-btn {
+      background: var(--card-color);
+      border-color: var(--card-color);
+      color: var(--bg-primary);
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 22px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .route-card:hover .nav-btn {
+      background: var(--card-color);
+      border-color: var(--card-color);
+      color: var(--bg-primary);
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 15, 26, 0.92);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal {
+      background: var(--bg-secondary);
+      border-radius: 24px;
+      width: 100%;
+      max-width: 1100px;
+      max-height: 90vh;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+    }
+
+    @keyframes modalSlideIn {
+      from { opacity: 0; transform: scale(0.95) translateY(20px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-header {
+      padding: 24px 28px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .modal-title { font-size: 1.4rem; font-weight: 600; }
+
+    .modal-close {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      font-size: 1.6rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-close:hover {
+      background: rgba(255,255,255,0.1);
+      color: var(--text-primary);
+    }
+
+    .modal-body {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    @media (max-width: 900px) {
+      .modal-body {
+        grid-template-columns: 1fr;
+        grid-template-rows: 300px 1fr;
+      }
+    }
+
+    .map-container {
+      width: 100%;
+      height: 100%;
+      min-height: 400px;
+      background: var(--bg-primary);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .map-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .route-details {
+      padding: 28px;
+      overflow-y: auto;
+      background: var(--bg-card);
+    }
+
+    .detail-section { margin-bottom: 28px; }
+    .detail-section:last-child { margin-bottom: 0; }
+    .detail-section h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      font-weight: 500;
+    }
+
+    .detail-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .detail-stat {
+      background: rgba(255,255,255,0.03);
+      border-radius: 14px;
+      padding: 18px;
+      border: 1px solid var(--border-color);
+    }
+
+    .detail-stat-value { font-size: 1.6rem; font-weight: 700; color: var(--accent-teal); }
+    .detail-stat-label { font-size: 0.78rem; color: var(--text-muted); margin-top: 4px; }
+
+    .waypoints { display: flex; flex-direction: column; }
+
+    .waypoint {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 0;
+      position: relative;
+    }
+
+    .waypoint:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 11px;
+      top: 40px;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent-teal) 0%, transparent 100%);
+    }
+
+    .waypoint-marker {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--accent-teal);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--bg-primary);
+    }
+
+    .waypoint:first-child .waypoint-marker { background: var(--accent-green); }
+    .waypoint:last-child .waypoint-marker { background: var(--accent-coral); }
+
+    .waypoint-info h4 { font-size: 0.95rem; font-weight: 500; margin-bottom: 3px; }
+    .waypoint-info p { font-size: 0.8rem; color: var(--text-muted); }
+
+    .tips-list { list-style: none; }
+
+    .tips-list li {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      line-height: 1.5;
+    }
+
+    .tips-list li:last-child { border-bottom: none; padding-bottom: 0; }
+    .tips-list li::before { content: '💡'; flex-shrink: 0; }
+
+    footer {
+      text-align: center;
+      padding: 40px 0;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    /* 导航模态框样式 */
+    .nav-modal {
+      max-width: 600px;
+    }
+
+    .nav-modal-body {
+      padding: 28px;
+      max-height: calc(90vh - 80px);
+      overflow-y: auto;
+    }
+
+    .nav-section {
+      margin-bottom: 28px;
+    }
+
+    .nav-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .nav-section h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .nav-app-btn {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      color: var(--text-primary);
+      text-decoration: none;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .nav-app-btn:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(255,255,255,0.15);
+      transform: translateX(4px);
+    }
+
+    .nav-app-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+
+    .nav-app-icon.amap { background: linear-gradient(135deg, #1677ff, #4096ff); }
+    .nav-app-icon.baidu { background: linear-gradient(135deg, #3385ff, #5b9fff); }
+    .nav-app-icon.apple { background: linear-gradient(135deg, #34c759, #30d158); }
+
+    .nav-app-info {
+      flex: 1;
+    }
+
+    .nav-app-info h4 {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .nav-app-info p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .nav-app-arrow {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+    }
+
+    .nav-guide {
+      background: rgba(45, 212, 191, 0.08);
+      border: 1px solid rgba(45, 212, 191, 0.2);
+      border-radius: 14px;
+      padding: 20px;
+    }
+
+    .nav-guide h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--accent-teal);
+      margin-bottom: 14px;
+    }
+
+    .nav-steps {
+      list-style: none;
+    }
+
+    .nav-steps li {
+      padding: 10px 0;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      line-height: 1.5;
+    }
+
+    .nav-steps li:not(:last-child) {
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .step-num {
+      width: 24px;
+      height: 24px;
+      background: var(--accent-teal);
+      color: var(--bg-primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .waypoint-list {
+      background: var(--bg-card);
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 16px;
+    }
+
+    .waypoint-list h5 {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+
+    .waypoint-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .waypoint-chip {
+      padding: 6px 12px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: all;
+    }
+
+    .waypoint-chip:hover {
+      background: rgba(45, 212, 191, 0.15);
+      border-color: var(--accent-teal);
+      color: var(--accent-teal);
+    }
+
+    .waypoint-chip.start {
+      background: rgba(74, 222, 128, 0.15);
+      border-color: var(--accent-green);
+      color: var(--accent-green);
+    }
+
+    .waypoint-chip.end {
+      background: rgba(251, 113, 133, 0.15);
+      border-color: var(--accent-coral);
+      color: var(--accent-coral);
+    }
+
+    .copy-hint {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .copy-all-btn {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      margin-top: 12px;
+      background: rgba(45, 212, 191, 0.1);
+      border: 1px solid var(--accent-teal);
+      border-radius: 10px;
+      color: var(--accent-teal);
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .copy-all-btn:hover {
+      background: var(--accent-teal);
+      color: var(--bg-primary);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--accent-teal);
+      color: var(--bg-primary);
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      z-index: 2000;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-pattern"></div>
+  
+  <div class="container">
+    <header>
+      <div class="logo-icon">🚴</div>
+      <h1>苏州骑行路线</h1>
+      <p class="subtitle">从 <span>相城区紫珺兰园</span> 出发 · 探索苏州最美骑行风景</p>
+      
+      <div class="stats-bar">
+        <div class="stat-item">
+          <div class="stat-value" id="statRouteCount">16</div>
+          <div class="stat-label">精选路线</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">280</div>
+          <div class="stat-label">最长公里</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">30+</div>
+          <div class="stat-label">途经景点</div>
+        </div>
+      </div>
+    </header>
+
+    <div class="category-tabs" id="categoryTabs">
+      <div class="category-tab tab-all active" data-category="all" onclick="filterRoutes('all')">🗺️ 全部 <span class="tab-count">16</span></div>
+      <div class="category-tab tab-urban" data-category="urban" onclick="filterRoutes('urban')">🛣️ 城市绿道 <span class="tab-count">4</span></div>
+      <div class="category-tab tab-lake" data-category="lake" onclick="filterRoutes('lake')">🏞️ 湖景湿地 <span class="tab-count">5</span></div>
+      <div class="category-tab tab-heritage" data-category="heritage" onclick="filterRoutes('heritage')">🏯 古镇人文 <span class="tab-count">4</span></div>
+      <div class="category-tab tab-expedition" data-category="expedition" onclick="filterRoutes('expedition')">🚵 长途远征 <span class="tab-count">3</span></div>
+    </div>
+
+    <div class="routes-grid" id="routesGrid"></div>
+  </div>
+
+  <footer>
+    <p>🚴 骑行愉快，注意安全 · 数据仅供参考，实际路线请结合导航使用</p>
+  </footer>
+
+  <div class="toast" id="toast">已复制到剪贴板</div>
+
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modalTitle">路线详情</h2>
+        <button class="modal-close" onclick="closeModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="map-container">
+          <canvas class="map-canvas" id="mapCanvas"></canvas>
+        </div>
+        <div class="route-details" id="routeDetails"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 导航模态框 -->
+  <div class="modal-overlay" id="navModalOverlay">
+    <div class="modal nav-modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="navModalTitle">骑行导航</h2>
+        <button class="modal-close" onclick="closeNavModal()">×</button>
+      </div>
+      <div class="nav-modal-body" id="navModalBody"></div>
+    </div>
+  </div>
+
+  <script>
+    const routes = [
+      // ── 城市绿道 ─────────────────────────────────────────────
+      {
+        id: 9, distance: 8, name: '黄埭古街骑行', category: 'urban', level: 'easy', badge: '休闲短途',
+        path: '紫珺兰园 → 黄埭老街 → 黄埭公园 → 返回',
+        duration: '30-45分钟', terrain: '平坦',
+        waypoints: [
+          { name: '紫珺兰园', desc: '起点 · 相城区黄埭镇', lat: 31.412, lng: 120.568 },
+          { name: '黄埭老街', desc: '百年古街 · 本地风情小吃', lat: 31.406, lng: 120.552 },
+          { name: '黄埭公园', desc: '镇中心公园 · 休息补给', lat: 31.409, lng: 120.547 },
+          { name: '紫珺兰园', desc: '返回起点', lat: 31.412, lng: 120.568 }
+        ],
+        tips: ['全程仅8公里，适合傍晚随手骑', '黄埭老街有本地特色小吃', '就在家门口，零压力路线'],
+        color: '#4ade80'
+      },
+      {
+        id: 10, distance: 15, name: '漕湖大道快骑', category: 'urban', level: 'easy', badge: '城市绿道',
+        path: '紫珺兰园 → 漕湖大道 → 漕湖广场 → 返回',
+        duration: '45分钟-1小时', terrain: '平坦',
+        waypoints: [
+          { name: '紫珺兰园', desc: '起点', lat: 31.412, lng: 120.568 },
+          { name: '漕湖大道', desc: '宽阔骑行大道 · 路况极佳', lat: 31.428, lng: 120.575 },
+          { name: '漕湖广场', desc: '漕湖北岸广场 · 可远眺漕湖', lat: 31.447, lng: 120.583 },
+          { name: '紫珺兰园', desc: '返回起点', lat: 31.412, lng: 120.568 }
+        ],
+        tips: ['漕湖大道是相城最好骑的宽路', '早晨骑行空气清新，几乎无车', '路面平整，任何车型都适合'],
+        color: '#4ade80'
+      },
+      {
+        id: 11, distance: 22, name: '元和塘绿道骑行', category: 'urban', level: 'easy', badge: '城市绿道',
+        path: '紫珺兰园 → 黄桥公园 → 元和塘绿道 → 相城中心 → 返回',
+        duration: '1-1.5小时', terrain: '平坦',
+        waypoints: [
+          { name: '紫珺兰园', desc: '起点', lat: 31.412, lng: 120.568 },
+          { name: '黄桥公园', desc: '途经公园 · 休息补给', lat: 31.378, lng: 120.589 },
+          { name: '元和塘绿道', desc: '沿河绿道 · 景色宜人', lat: 31.365, lng: 120.608 },
+          { name: '相城区中心', desc: '商业配套完善 · 餐饮丰富', lat: 31.358, lng: 120.620 },
+          { name: '紫珺兰园', desc: '返回起点', lat: 31.412, lng: 120.568 }
+        ],
+        tips: ['元和塘绿道沿河而建，是相城热门骑行路', '相城中心有大型商场可补给', '适合工作日晚间骑行'],
+        color: '#4ade80'
+      },
+      {
+        id: 12, distance: 30, name: '相城大道-苏州北站', category: 'urban', level: 'easy', badge: '城市探索',
+        path: '紫珺兰园 → 黄桥街道 → 苏州北站 → 相城广场 → 返回',
+        duration: '1.5-2小时', terrain: '平坦',
+        waypoints: [
+          { name: '紫珺兰园', desc: '起点', lat: 31.412, lng: 120.568 },
+          { name: '黄桥街道', desc: '途经黄桥', lat: 31.390, lng: 120.578 },
+          { name: '苏州北站', desc: '高铁站 · 现代地标建筑', lat: 31.368, lng: 120.605 },
+          { name: '相城广场', desc: '相城区核心商圈', lat: 31.355, lng: 120.615 },
+          { name: '紫珺兰园', desc: '返回起点', lat: 31.412, lng: 120.568 }
+        ],
+        tips: ['沿相城大道骑行，道路宽阔车道多', '苏州北站建筑独特，值得打卡', '相城广场有众多餐厅休息'],
+        color: '#4ade80'
+      },
+      // ── 湖景湿地 ─────────────────────────────────────────────
+      {
+        id: 1, distance: 20, name: '虎丘湿地公园环线', category: 'lake', level: 'easy', badge: '休闲',
+        path: '紫珺兰园 → 黄桥公园 → 虎丘湿地公园 → 三角咀湿地公园 → 返回',
+        duration: '1.5-2小时', terrain: '平坦',
+        waypoints: [
+          { name: '紫珺兰园', desc: '起点 · 相城区黄埭镇', lat: 31.412, lng: 120.568 },
+          { name: '黄桥公园', desc: '城市公园 · 适合休息', lat: 31.378, lng: 120.589 },
+          { name: '虎丘湿地公园', desc: '生态湿地 · 可租电瓶车', lat: 31.363, lng: 120.572 },
+          { name: '三角咀湿地公园', desc: '自然风光 · 观鸟胜地', lat: 31.363, lng: 120.585 },
+          { name: '紫珺兰园', desc: '返回起点', lat: 31.412, lng: 120.568 }
+        ],
+        tips: ['全程平坦，适合新手', '虎丘湿地可租电瓶车游览公园内部', '建议携带饮用水'],
+        color: '#2dd4bf'
+      },
+      {
+        id: 2, distance: 35, name: '荷塘月色湿地环线', category: 'lake', level: 'easy', badge: '休闲',
+        path: '紫珺兰园 → 漕湖大道 → 荷塘月色湿地公园 → 漕湖湿地公园 → 返回',
+        duration: '2-2.5小时', terrain: '平坦',
+        waypoints: [
+          { name: '紫珺兰园', desc: '起点', lat: 31.412, lng: 120.568 },
+          { name: '漕湖大道', desc: '骑行专用道 · 风景优美', lat: 31.42, lng: 120.58 },
+          { name: '荷塘月色湿地公园', desc: '大片荷花 · 夏季最佳', lat: 31.410, lng: 120.583 },
+          { name: '漕湖湿地公园', desc: '相城人的"太湖"', lat: 31.43, lng: 120.59 },
+          { name: '紫珺兰园', desc: '返回起点', lat: 31.412, lng: 120.568 }
+        ],
+        tips: ['夏季荷花盛开，景色最美', '漕湖湿地有农产品采摘', '路况良好'],
+        color: '#2dd4bf'
+      },
+      {
+        id: 13, distance: 42, name: '漕湖全环骑行', category: 'lake', level: 'easy', badge: '湖景骑行',
+        path: '紫珺兰园 → 漕湖大道 → 漕湖北岸 → 漕湖东岸 → 漕湖湿地公园 → 返回',
+        duration: '2-2.5小时', terrain: '平坦',
+        waypoints: [
+          { name: '紫珺兰园', desc: '起点', lat: 31.412, lng: 120.568 },
+          { name: '漕湖大道', desc: '骑行大道', lat: 31.428, lng: 120.575 },
+          { name: '漕湖北岸', desc: '全景观景台 · 湖面开阔', lat: 31.452, lng: 120.595 },
+          { name: '漕湖东岸', desc: '湖岸骑行道', lat: 31.440, lng: 120.615 },
+          { name: '漕湖湿地公园', desc: '相城最大湿地 · 终点补给', lat: 31.43, lng: 120.59 },
+          { name: '紫珺兰园', desc: '返回起点', lat: 31.412, lng: 120.568 }
+        ],
+        tips: ['漕湖是相城区最大湖泊，环湖骑行体验极佳', '北岸有观景台，湖景开阔', '建议清晨或傍晚出发，光线最美'],
+        color: '#2dd4bf'
+      },
+      {
+        id: 3, distance: 50, name: '阳澄湖半岛骑行', category: 'lake', level: 'medium', badge: '经典推荐',
+        path: '紫珺兰园 → 阳澄湖大道 → 重元寺 → 阳澄湖环湖自行车道 → 返回',
+        duration: '3-4小时', terrain: '平坦',
+        waypoints: [
+          { name: '紫珺兰园', desc: '起点', lat: 31.412, lng: 120.568 },
+          { name: '阳澄湖大道', desc: '直通湖区', lat: 31.38, lng: 120.65 },
+          { name: '重元寺', desc: '中国最大室内观音', lat: 31.372, lng: 120.72 },
+          { name: '阳澄湖环湖自行车道', desc: '苏州首个专用骑行道', lat: 31.38, lng: 120.75 },
+          { name: '阳澄湖旅游集散中心', desc: '隈研吾设计·网红打卡', lat: 31.40, lng: 120.78 },
+          { name: '紫珺兰园', desc: '返回起点', lat: 31.412, lng: 120.568 }
+        ],
+        tips: ['苏州最热门骑行路线', '有自行车租赁点，可租头盔', '秋季可品尝大闸蟹'],
+        color: '#38bdf8'
+      },
+      {
+        id: 4, distance: 70, name: '金鸡湖环湖骑行', category: 'lake', level: 'medium', badge: '城市风光',
+        path: '紫珺兰园 → 园区 → 金鸡湖大桥 → 李公堤 → 湖滨大道 → 返回',
+        duration: '4-5小时', terrain: '平坦',
+        waypoints: [
+          { name: '紫珺兰园', desc: '起点', lat: 31.412, lng: 120.568 },
+          { name: '苏州工业园区', desc: '现代化城市景观', lat: 31.32, lng: 120.65 },
+          { name: '金鸡湖大桥', desc: '湖景开阔', lat: 31.31, lng: 120.70 },
+          { name: '李公堤', desc: '餐饮休闲 · 夜景绝美', lat: 31.303, lng: 120.692 },
+          { name: '月光码头', desc: '城市地标 · 东方之门', lat: 31.31, lng: 120.71 },
+          { name: '紫珺兰园', desc: '返回起点', lat: 31.412, lng: 120.568 }
+        ],
+        tips: ['夜骑体验绝佳', '李公堤有众多餐厅', '环湖步道约14公里'],
+        color: '#38bdf8'
+      },
+      // ── 古镇人文 ─────────────────────────────────────────────
+      {
+        id: 14, distance: 48, name: '望亭运河古镇', category: 'heritage', level: 'medium', badge: '古镇人文',
+        path: '紫珺兰园 → 黄埭镇西 → 望亭古镇 → 京杭运河景观带 → 返回',
+        duration: '2.5-3小时', terrain: '平坦',
+        waypoints: [
+          { name: '紫珺兰园', desc: '起点', lat: 31.412, lng: 120.568 },
+          { name: '黄埭镇西', desc: '途经黄埭', lat: 31.410, lng: 120.548 },
+          { name: '望亭古镇', desc: '千年古镇 · 运河文化', lat: 31.452, lng: 120.518 },
+          { name: '京杭运河景观带', desc: '古运河风光 · 历史积淀深厚', lat: 31.458, lng: 120.512 },
+          { name: '紫珺兰园', desc: '返回起点', lat: 31.412, lng: 120.568 }
+        ],
+        tips: ['望亭是京杭大运河沿线重要古镇', '运河景观带有专属骑行步道', '镇上有传统苏式糕点可购买'],
+        color: '#fbbf24'
+      },
+      {
+        id: 15, distance: 60, name: '虎丘山塘古城游', category: 'heritage', level: 'medium', badge: '古城探访',
+        path: '紫珺兰园 → 虎丘湿地 → 虎丘山 → 山塘街 → 返回',
+        duration: '3.5-4小时', terrain: '平坦为主',
+        waypoints: [
+          { name: '紫珺兰园', desc: '起点', lat: 31.412, lng: 120.568 },
+          { name: '虎丘湿地公园', desc: '生态过渡区', lat: 31.363, lng: 120.572 },
+          { name: '虎丘山', desc: '苏州第一名胜 · 云岩寺塔', lat: 31.333, lng: 120.557 },
+          { name: '山塘街', desc: '千年古街 · 苏式民俗风情', lat: 31.322, lng: 120.566 },
+          { name: '紫珺兰园', desc: '返回起点', lat: 31.412, lng: 120.568 }
+        ],
+        tips: ['虎丘山景区需购票入园', '山塘街是苏州最著名的历史街区', '建议上午出发，避开人流高峰'],
+        color: '#fbbf24'
+      },
+      {
+        id: 16, distance: 80, name: '甪直古镇骑行', category: 'heritage', level: 'medium', badge: '水乡古镇',
+        path: '紫珺兰园 → 苏州工业园区 → 独墅湖 → 甪直古镇 → 返回',
+        duration: '4-5小时', terrain: '平坦',
+        waypoints: [
+          { name: '紫珺兰园', desc: '起点', lat: 31.412, lng: 120.568 },
+          { name: '苏州工业园区', desc: '现代与古典交汇处', lat: 31.320, lng: 120.650 },
+          { name: '独墅湖', desc: '大学城 · 湖景优美', lat: 31.267, lng: 120.721 },
+          { name: '甪直古镇', desc: '国家5A级 · 保存完整的水乡', lat: 31.285, lng: 120.805 },
+          { name: '紫珺兰园', desc: '返回起点', lat: 31.412, lng: 120.568 }
+        ],
+        tips: ['甪直是苏州保存最完整的古镇之一', '古镇内可游船揽胜', '建议携带充足饮水和补给'],
+        color: '#fbbf24'
+      },
+      {
+        id: 5, distance: 100, name: '常熟尚湖风景区', category: 'heritage', level: 'hard', badge: '进阶挑战',
+        path: '紫珺兰园 → 望亭 → 常熟 → 尚湖风景区 → 虞山公园 → 返回',
+        duration: '5-6小时', terrain: '部分起伏',
+        waypoints: [
+          { name: '紫珺兰园', desc: '起点', lat: 31.412, lng: 120.568 },
+          { name: '望亭', desc: '运河古镇', lat: 31.45, lng: 120.52 },
+          { name: '常熟市区', desc: '补给点', lat: 31.64, lng: 120.73 },
+          { name: '尚湖风景区', desc: 'AAAAA景区 · 竹筏漂流', lat: 31.638, lng: 120.689 },
+          { name: '虞山公园', desc: '国家森林公园', lat: 31.65, lng: 120.734 },
+          { name: '紫珺兰园', desc: '返回起点', lat: 31.412, lng: 120.568 }
+        ],
+        tips: ['建议携带充足补给', '尚湖景区需购票入园', '虞山有登山步道'],
+        color: '#fbbf24'
+      },
+      // ── 长途远征 ─────────────────────────────────────────────
+      {
+        id: 6, distance: 150, name: '独墅湖+石湖大环线', category: 'expedition', level: 'hard', badge: '长途骑行',
+        path: '紫珺兰园 → 金鸡湖 → 独墅湖 → 石湖风景区 → 天平山 → 返回',
+        duration: '7-8小时', terrain: '部分起伏',
+        waypoints: [
+          { name: '紫珺兰园', desc: '起点', lat: 31.412, lng: 120.568 },
+          { name: '金鸡湖', desc: '城市湖景', lat: 31.311, lng: 120.694 },
+          { name: '独墅湖', desc: '大学城 · 安静优雅', lat: 31.265, lng: 120.721 },
+          { name: '石湖风景区', desc: '湖光山色 · 可租船', lat: 31.242, lng: 120.598 },
+          { name: '天平山', desc: '红枫胜地 · 秋季绝美', lat: 31.24, lng: 120.52 },
+          { name: '紫珺兰园', desc: '返回起点', lat: 31.412, lng: 120.568 }
+        ],
+        tips: ['独墅湖有大教堂打卡点', '石湖可骑行或租电瓶车', '秋季天平山红枫绝美'],
+        color: '#a78bfa'
+      },
+      {
+        id: 7, distance: 200, name: '环太湖公路骑行', category: 'expedition', level: 'extreme', badge: '高阶挑战',
+        path: '紫珺兰园 → 木渎 → 太湖国家湿地公园 → 东山/西山环岛 → 返回',
+        duration: '10-12小时', terrain: '山地起伏',
+        waypoints: [
+          { name: '紫珺兰园', desc: '起点', lat: 31.412, lng: 120.568 },
+          { name: '木渎古镇', desc: '江南水乡 · 补给休息', lat: 31.26, lng: 120.52 },
+          { name: '太湖国家湿地公园', desc: '太湖风光', lat: 31.325, lng: 120.357 },
+          { name: '东山镇', desc: '枇杷之乡', lat: 31.08, lng: 120.41 },
+          { name: '西山风景区', desc: '太湖最大岛', lat: 31.129, lng: 120.268 },
+          { name: '紫珺兰园', desc: '返回起点', lat: 31.412, lng: 120.568 }
+        ],
+        tips: ['建议分两天完成或夜骑', '东山西山有民宿可住', '环太湖公路全长23公里'],
+        color: '#fb7185'
+      },
+      {
+        id: 8, distance: 280, name: '环太湖完整骑行', category: 'expedition', level: 'extreme', badge: '挑战极限',
+        path: '紫珺兰园 → 太湖大桥 → 西山 → 宜兴 → 无锡 → 常州 → 返回',
+        duration: '2-3天', terrain: '复杂多变',
+        waypoints: [
+          { name: '紫珺兰园', desc: '起点', lat: 31.412, lng: 120.568 },
+          { name: '太湖大桥', desc: '跨湖大桥', lat: 31.15, lng: 120.35 },
+          { name: '西山镇', desc: '第一天住宿点', lat: 31.129, lng: 120.268 },
+          { name: '宜兴', desc: '紫砂之都 · 第二天', lat: 31.36, lng: 119.82 },
+          { name: '无锡', desc: '太湖明珠', lat: 31.49, lng: 120.31 },
+          { name: '常熟', desc: '返程', lat: 31.64, lng: 120.73 },
+          { name: '紫珺兰园', desc: '终点', lat: 31.412, lng: 120.568 }
+        ],
+        tips: ['建议2.5-3天完成', '提前预订沿途住宿', '携带修车工具和备胎', '建议组队骑行'],
+        color: '#fb7185'
+      }
+    ];
+
+    let currentCategory = 'all';
+
+    function filterRoutes(categoryId) {
+      currentCategory = categoryId;
+      document.querySelectorAll('.category-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.category === categoryId);
+      });
+      const filtered = categoryId === 'all'
+        ? [...routes].sort((a, b) => a.distance - b.distance)
+        : routes.filter(r => r.category === categoryId).sort((a, b) => a.distance - b.distance);
+      document.getElementById('statRouteCount').textContent = filtered.length;
+      renderRoutes(filtered);
+    }
+
+    function renderRoutes(routeList) {
+      const list = routeList || [...routes].sort((a, b) => a.distance - b.distance);
+      const grid = document.getElementById('routesGrid');
+      grid.innerHTML = list.map((route, idx) => `
+        <div class="route-card level-${route.level}" onclick="openModal(${route.id})" style="animation-delay:${0.05 + idx * 0.05}s">
+          <div class="route-header">
+            <div class="route-distance">${route.distance}<span>km</span></div>
+            <span class="route-badge">${route.badge}</span>
+          </div>
+          <h3 class="route-name">${route.name}</h3>
+          <p class="route-path">${route.path}</p>
+          <div class="route-meta">
+            <div class="meta-item">
+              <svg class="meta-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              ${route.duration}
+            </div>
+            <div class="meta-item">
+              <svg class="meta-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+              ${route.terrain}
+            </div>
+          </div>
+          <div class="card-actions">
+            <div class="view-btn">
+              查看详细路线
+              <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </div>
+            <div class="nav-btn" onclick="event.stopPropagation(); openNavModal(${route.id})">
+              🧭 骑行导航
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function drawMap(canvas, route) {
+      const ctx = canvas.getContext('2d');
+      const container = canvas.parentElement;
+      const dpr = window.devicePixelRatio || 1;
+      
+      canvas.width = container.clientWidth * dpr;
+      canvas.height = container.clientHeight * dpr;
+      canvas.style.width = container.clientWidth + 'px';
+      canvas.style.height = container.clientHeight + 'px';
+      ctx.scale(dpr, dpr);
+      
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+      
+      ctx.fillStyle = '#0a0f1a';
+      ctx.fillRect(0, 0, width, height);
+      
+      const lats = route.waypoints.map(w => w.lat);
+      const lngs = route.waypoints.map(w => w.lng);
+      const minLat = Math.min(...lats), maxLat = Math.max(...lats);
+      const minLng = Math.min(...lngs), maxLng = Math.max(...lngs);
+      
+      const padding = 70;
+      const mapWidth = width - padding * 2;
+      const mapHeight = height - padding * 2;
+      
+      const latRange = maxLat - minLat || 0.1;
+      const lngRange = maxLng - minLng || 0.1;
+      const scale = Math.min(mapWidth / lngRange, mapHeight / latRange) * 0.8;
+      
+      const centerLng = (minLng + maxLng) / 2;
+      const centerLat = (minLat + maxLat) / 2;
+      
+      function toCanvas(lat, lng) {
+        return {
+          x: width / 2 + (lng - centerLng) * scale,
+          y: height / 2 - (lat - centerLat) * scale
+        };
+      }
+      
+      // Grid
+      ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i < width; i += 50) {
+        ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, height); ctx.stroke();
+      }
+      for (let i = 0; i < height; i += 50) {
+        ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(width, i); ctx.stroke();
+      }
+      
+      // Route line with glow
+      ctx.save();
+      ctx.shadowColor = route.color;
+      ctx.shadowBlur = 20;
+      ctx.strokeStyle = route.color;
+      ctx.lineWidth = 4;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.beginPath();
+      route.waypoints.forEach((wp, idx) => {
+        const pos = toCanvas(wp.lat, wp.lng);
+        idx === 0 ? ctx.moveTo(pos.x, pos.y) : ctx.lineTo(pos.x, pos.y);
+      });
+      ctx.stroke();
+      ctx.restore();
+      
+      // Waypoints
+      route.waypoints.forEach((wp, idx) => {
+        const pos = toCanvas(wp.lat, wp.lng);
+        const isStart = idx === 0;
+        const isEnd = idx === route.waypoints.length - 1;
+        const color = isStart ? '#4ade80' : isEnd ? '#fb7185' : '#2dd4bf';
+        
+        // Glow
+        ctx.beginPath();
+        ctx.arc(pos.x, pos.y, 20, 0, Math.PI * 2);
+        ctx.fillStyle = color.replace(')', ', 0.2)').replace('rgb', 'rgba').replace('#', 'rgba(');
+        const gradient = ctx.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, 20);
+        gradient.addColorStop(0, color + '33');
+        gradient.addColorStop(1, 'transparent');
+        ctx.fillStyle = gradient;
+        ctx.fill();
+        
+        // White border
+        ctx.beginPath();
+        ctx.arc(pos.x, pos.y, 14, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffffff';
+        ctx.fill();
+        
+        // Inner
+        ctx.beginPath();
+        ctx.arc(pos.x, pos.y, 10, 0, Math.PI * 2);
+        ctx.fillStyle = color;
+        ctx.fill();
+        
+        // Number
+        ctx.fillStyle = '#0a0f1a';
+        ctx.font = 'bold 11px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(idx + 1, pos.x, pos.y);
+        
+        // Label
+        ctx.fillStyle = '#e8edf5';
+        ctx.font = '500 13px sans-serif';
+        ctx.fillText(wp.name, pos.x, pos.y + 30);
+      });
+      
+      // Title
+      ctx.fillStyle = route.color;
+      ctx.font = 'bold 14px sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText(`${route.name}`, 20, 28);
+      ctx.fillStyle = '#5a6785';
+      ctx.font = '12px sans-serif';
+      ctx.fillText(`往返 ${route.distance}km · ${route.duration}`, 20, 48);
+      
+      // Legend
+      const ly = height - 28;
+      [['#4ade80', '起点', 20], ['#fb7185', '终点', 80], ['#2dd4bf', '途经点', 140]].forEach(([c, t, x]) => {
+        ctx.beginPath();
+        ctx.arc(x, ly, 6, 0, Math.PI * 2);
+        ctx.fillStyle = c;
+        ctx.fill();
+        ctx.fillStyle = '#8e9bb3';
+        ctx.font = '11px sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText(t, x + 12, ly + 4);
+      });
+    }
+
+    let currentRoute = null;
+
+    function openModal(routeId) {
+      currentRoute = routes.find(r => r.id === routeId);
+      if (!currentRoute) return;
+
+      document.getElementById('modalTitle').textContent = currentRoute.name;
+      document.getElementById('modalOverlay').classList.add('active');
+      document.body.style.overflow = 'hidden';
+
+      renderDetails(currentRoute);
+
+      requestAnimationFrame(() => {
+        const canvas = document.getElementById('mapCanvas');
+        drawMap(canvas, currentRoute);
+      });
+    }
+
+    function renderDetails(route) {
+      document.getElementById('routeDetails').innerHTML = `
+        <div class="detail-section">
+          <h3>路线概览</h3>
+          <div class="detail-stats">
+            <div class="detail-stat">
+              <div class="detail-stat-value">${route.distance}km</div>
+              <div class="detail-stat-label">往返距离</div>
+            </div>
+            <div class="detail-stat">
+              <div class="detail-stat-value">${route.duration}</div>
+              <div class="detail-stat-label">预计时间</div>
+            </div>
+            <div class="detail-stat">
+              <div class="detail-stat-value">${route.waypoints.length - 1}</div>
+              <div class="detail-stat-label">途经站点</div>
+            </div>
+            <div class="detail-stat">
+              <div class="detail-stat-value">${route.terrain}</div>
+              <div class="detail-stat-label">路面状况</div>
+            </div>
+          </div>
+        </div>
+        <div class="detail-section">
+          <h3>途经站点</h3>
+          <div class="waypoints">
+            ${route.waypoints.map((wp, idx) => `
+              <div class="waypoint">
+                <div class="waypoint-marker">${idx + 1}</div>
+                <div class="waypoint-info">
+                  <h4>${wp.name}</h4>
+                  <p>${wp.desc}</p>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        <div class="detail-section">
+          <h3>骑行建议</h3>
+          <ul class="tips-list">
+            ${route.tips.map(tip => `<li>${tip}</li>`).join('')}
+          </ul>
+        </div>
+      `;
+    }
+
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.remove('active');
+      document.body.style.overflow = '';
+      currentRoute = null;
+    }
+
+    document.getElementById('modalOverlay').addEventListener('click', e => {
+      if (e.target === e.currentTarget) closeModal();
+    });
+
+    window.addEventListener('resize', () => {
+      if (currentRoute) {
+        const canvas = document.getElementById('mapCanvas');
+        drawMap(canvas, currentRoute);
+      }
+    });
+
+    filterRoutes('all');
+
+    // 导航功能
+    function openNavModal(routeId) {
+      const route = routes.find(r => r.id === routeId);
+      if (!route) return;
+
+      document.getElementById('navModalTitle').textContent = `${route.name} · 骑行导航`;
+      document.getElementById('navModalOverlay').classList.add('active');
+      document.body.style.overflow = 'hidden';
+
+      renderNavContent(route);
+    }
+
+    function closeNavModal() {
+      document.getElementById('navModalOverlay').classList.remove('active');
+      if (!document.getElementById('modalOverlay').classList.contains('active')) {
+        document.body.style.overflow = '';
+      }
+    }
+
+    function renderNavContent(route) {
+      const waypoints = route.waypoints;
+      const start = waypoints[0];
+      const end = waypoints[waypoints.length - 1];
+      const midPoints = waypoints.slice(1, -1);
+
+      // 生成高德地图URL（骑行模式）
+      // 高德地图URI: https://lbs.amap.com/api/uri-api/guide/travel/route
+      const amapUrl = generateAmapUrl(route);
+      const baiduUrl = generateBaiduUrl(route);
+      
+      document.getElementById('navModalBody').innerHTML = `
+        <div class="nav-section">
+          <h3>📱 一键打开导航</h3>
+          <div class="nav-buttons">
+            <a href="${amapUrl}" target="_blank" class="nav-app-btn">
+              <div class="nav-app-icon amap">🗺️</div>
+              <div class="nav-app-info">
+                <h4>高德地图</h4>
+                <p>推荐 · 支持骑行模式和途经点</p>
+              </div>
+              <span class="nav-app-arrow">→</span>
+            </a>
+            <a href="${baiduUrl}" target="_blank" class="nav-app-btn">
+              <div class="nav-app-icon baidu">🌐</div>
+              <div class="nav-app-info">
+                <h4>百度地图</h4>
+                <p>支持骑行导航</p>
+              </div>
+              <span class="nav-app-arrow">→</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="nav-section">
+          <h3>📋 手动设置多点导航</h3>
+          <div class="nav-guide">
+            <h4>高德地图 APP 设置步骤：</h4>
+            <ol class="nav-steps">
+              <li>
+                <span class="step-num">1</span>
+                <span>打开高德地图，点击搜索框输入起点 <strong>"${start.name}"</strong></span>
+              </li>
+              <li>
+                <span class="step-num">2</span>
+                <span>点击 <strong>"路线"</strong>，选择 <strong>"骑行"</strong> 模式</span>
+              </li>
+              <li>
+                <span class="step-num">3</span>
+                <span>点击起点和终点之间的 <strong>"+"</strong> 添加途经点</span>
+              </li>
+              <li>
+                <span class="step-num">4</span>
+                <span>依次添加下方所有途经点（按顺序）</span>
+              </li>
+              <li>
+                <span class="step-num">5</span>
+                <span>点击 <strong>"开始导航"</strong> 即可</span>
+              </li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="nav-section">
+          <h3>📍 途经点列表（点击复制）</h3>
+          <div class="waypoint-list">
+            <h5>按顺序添加以下地点：</h5>
+            <div class="waypoint-chips">
+              ${waypoints.map((wp, idx) => {
+                const isStart = idx === 0;
+                const isEnd = idx === waypoints.length - 1;
+                const chipClass = isStart ? 'start' : isEnd ? 'end' : '';
+                const label = isStart ? '起点' : isEnd ? '终点' : `途经${idx}`;
+                return `<span class="waypoint-chip ${chipClass}" onclick="copyText('${wp.name}')" title="${label}">${wp.name}</span>`;
+              }).join('')}
+            </div>
+            <p class="copy-hint">💡 点击地名可复制，粘贴到地图搜索框即可</p>
+            <button class="copy-all-btn" onclick="copyAllWaypoints(${route.id})">
+              📋 复制全部途经点
+            </button>
+          </div>
+        </div>
+
+        <div class="nav-section">
+          <h3>🔗 坐标信息（高级用户）</h3>
+          <div class="waypoint-list">
+            <h5>GPS坐标（GCJ-02坐标系）：</h5>
+            <div style="font-family: monospace; font-size: 0.8rem; color: var(--text-muted); line-height: 1.8;">
+              ${waypoints.map((wp, idx) => 
+                `<div onclick="copyText('${wp.lng},${wp.lat}')" style="cursor:pointer;padding:4px 0;border-bottom:1px solid var(--border-color);">
+                  <span style="color:var(--accent-teal)">${idx + 1}.</span> ${wp.name}: ${wp.lng.toFixed(6)}, ${wp.lat.toFixed(6)}
+                </div>`
+              ).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // 生成高德地图URL
+    function generateAmapUrl(route) {
+      const waypoints = route.waypoints;
+      const start = waypoints[0];
+      const end = waypoints[waypoints.length - 1];
+      const midPoints = waypoints.slice(1, -1);
+
+      // 高德地图骑行导航URL格式
+      // https://uri.amap.com/navigation?from=lng,lat,name&to=lng,lat,name&via=lng1,lat1,name1;lng2,lat2,name2&mode=bike
+      let url = `https://uri.amap.com/navigation?from=${start.lng},${start.lat},${encodeURIComponent(start.name)}&to=${end.lng},${end.lat},${encodeURIComponent(end.name)}&mode=bike&policy=0&coordinate=gaode`;
+      
+      if (midPoints.length > 0) {
+        const viaStr = midPoints.map(wp => `${wp.lng},${wp.lat},${encodeURIComponent(wp.name)}`).join(';');
+        url += `&via=${viaStr}`;
+      }
+      
+      return url;
+    }
+
+    // 生成百度地图URL
+    function generateBaiduUrl(route) {
+      const waypoints = route.waypoints;
+      const start = waypoints[0];
+      const end = waypoints[waypoints.length - 1];
+      
+      // 百度地图骑行导航URL（注意：百度使用BD09坐标系，这里用名称导航更准确）
+      // https://api.map.baidu.com/direction?origin=name&destination=name&mode=riding
+      return `https://api.map.baidu.com/direction?origin=${encodeURIComponent(start.name)}&destination=${encodeURIComponent(end.name)}&mode=riding&coord_type=gcj02&output=html&src=webapp.suzhou.cycling`;
+    }
+
+    // 复制文本
+    function copyText(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast(`已复制: ${text}`);
+      }).catch(() => {
+        // 降级方案
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        showToast(`已复制: ${text}`);
+      });
+    }
+
+    // 复制所有途经点
+    function copyAllWaypoints(routeId) {
+      const route = routes.find(r => r.id === routeId);
+      if (!route) return;
+      
+      const text = route.waypoints.map((wp, idx) => {
+        const label = idx === 0 ? '起点' : idx === route.waypoints.length - 1 ? '终点' : `途经${idx}`;
+        return `${label}: ${wp.name}`;
+      }).join('\n');
+      
+      copyText(text);
+      showToast('已复制全部途经点');
+    }
+
+    // 显示提示
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2000);
+    }
+
+    // 导航模态框事件
+    document.getElementById('navModalOverlay').addEventListener('click', e => {
+      if (e.target === e.currentTarget) closeNavModal();
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        if (document.getElementById('navModalOverlay').classList.contains('active')) {
+          closeNavModal();
+        } else {
+          closeModal();
+        }
+      }
+    });
+  </script>
+</body>
+</html>
